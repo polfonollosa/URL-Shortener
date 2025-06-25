@@ -16,7 +16,7 @@
             <div class="menu">
                 <p class="title">Main</p>
                 <ul>
-                    <li class="">
+                    <li class="active">
                         <a href="#">
                             <i class="fi fi-rr-home"></i>
                             <span class="text">Dashboard</span>
@@ -41,7 +41,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="active">
+                    <li class="">
                         <a href="#">
                             <i class="fi fi-rr-file"></i>
                             <span class="text">Urls</span>
@@ -53,7 +53,7 @@
                             <span class="text">Schedules</span>
                         </a>
                     </li>
-                    <li class="active">
+                    <li class="">
                         <a href="#">
                             <i class="fi fi-rr-chart-line-up"></i>
                             <span class="text">Statistics</span>
@@ -75,7 +75,7 @@
                 </ul>
             </div>
             <div class="menu">
-                <p class="title">Settings</p>
+                <p class="titol" id="settings">Sett</p>
                 <ul>
                     <li class="">
                         <a href="#">
@@ -87,7 +87,7 @@
             </div>
         </div>
         <div class="menu">
-            <p class="title">Account</p>
+            <p class="title" id="account">Acco</p>
             <ul>
                 <li>
                     <a href="#">
@@ -161,6 +161,14 @@
     .user-details .name{
         font-size: 14px;
         font-weight: 500;
+    }
+
+    .menu .titol{
+        font-size: 11px;
+        font-weight: 500;
+        color: #757575;
+        text-transform: uppercase;
+
     }
 
     .menu .title{
@@ -292,7 +300,7 @@
         display: none;
     }
 
-    .sidebar.active .nav .menu .title {
+    .sidebar.active .title {
         text-align: center;
     }
 
@@ -351,6 +359,56 @@
         box-shadow: 0px 10px 8px rgba(0,0,0,0.1);
     }
 
+    .sidebar.night {
+        background-color: #1c1c1c;
+    }
+
+    .sidebar.night .menu-btn {
+        background-color: #2a2a2a;
+        border-color: #3a3a3a;
+        color: #ccc;
+    }
+
+    .sidebar.night .menu-btn:hover i {
+        color: #fff;
+    }
+
+    .sidebar.night .head {
+        border-bottom: 1px solid #2f2f2f;
+    }
+
+    .sidebar.night .user-details .title,
+    .sidebar.night .menu .title,
+    .sidebar.night .menu .titol,
+    .sidebar.night .menu ul li a {
+        color: #ccc;
+    }
+
+    .sidebar.night .user-details .name {
+        color: #f2f2f2;
+    }
+
+    .sidebar.night .menu ul li > a:hover,
+    .sidebar.night .menu ul li.active > a {
+        background-color: #2f2f2f;
+        color: #fff;
+    }
+
+    .sidebar.night .menu .sub-menu {
+        background-color: #2a2a2a;
+        border-color: #3a3a3a;
+        box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .sidebar.night .sidebar.active .menu > ul > li > a .text,
+    .sidebar.night .sidebar.active .menu > ul > li > a .text::after {
+        background-color: #000;
+
+    }
+
+    .sidebar.night .menu ul li > a .text {
+        color: #eee;
+    }
 
 
 </style>
@@ -373,6 +431,18 @@
     onMount(() => {
         jQuery(".menu-btn").on('click', function () {
             jQuery(".sidebar").toggleClass("active");
+
+            const isActive = jQuery(".sidebar").hasClass("active");
+
+            if (isActive) {
+                // Si sidebar está activa, acortar texto
+                jQuery("#account").text("Acco");
+                jQuery("#settings").text("Sett");
+            } else {
+                // Si sidebar está colapsada, mostrar texto completo
+                jQuery("#account").text("Account");
+                jQuery("#settings").text("Settings");
+            }
         });
     });
 
