@@ -1,107 +1,150 @@
+<script>
+    import { darkMode } from '$lib';
+    import { createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher();
+
+    let sidebarActive = false;
+    let expandedMenuIndex = null;
+    let selectedMenuIndex = null;
+
+    let menus = [
+        {
+            title: "Main",
+            items: [
+                { label: "Dashboard", icon: "fi fi-rr-home", link: "#" },
+                { label: "Urls", icon: "fi fi-rr-file", link: "#" },
+                { label: "Schedules", icon: "fi fi-rr-calendar", link: "#" },
+                {
+                    label: "Statistics",
+                    icon: "fi fi-rr-chart-line-up",
+                    link: "#",
+                    subItems: [
+                        { label: "Share", link: "#" },
+                        { label: "Tops", link: "#" }
+                    ]
+                }
+            ]
+        },
+        {
+            title: "Settings",
+            items: [
+                { label: "Settings", icon: "fi fi-rr-settings", link: "#" }
+            ]
+        },
+        {
+            title: "Account",
+            items: [
+                { label: "Help", icon: "fi fi-rr-question", link: "#" },
+                { label: "Logout", icon: "fi fi-rr-exit", link: "#" }
+            ]
+        }
+    ];
+
+    function toggleSidebar() {
+        sidebarActive = !sidebarActive;
+    }
+
+    function toggleMenu(index, hasSubItems) {
+        if (selectedMenuIndex === index) {
+            // Si ya está seleccionado, deseleccionamos
+            selectedMenuIndex = null;
+            expandedMenuIndex = null;
+            return;
+        }
+
+        if (hasSubItems) {
+            expandedMenuIndex = index;
+        } else {
+            expandedMenuIndex = null;
+        }
+
+        selectedMenuIndex = index;
+    }
+
+
+    function selectSubItem() {
+        expandedMenuIndex = null;
+        selectedMenuIndex = null;
+    }
+
+    function handleMenuClick(item) {
+        if (item.label === 'Settings') {
+            dispatch('openSettings'); // 👈 Emite evento al padre
+        }
+    }
+</script>
+
 <div class="container">
-    <div class="sidebar active">
-        <div class="menu-btn">
+    <div class={`sidebar ${$darkMode ? 'night' : ''} ${sidebarActive ? 'active' : ''}`}>
+        <div class="menu-btn" on:click={toggleSidebar}>
             <i class="fi fi-rr-angle-left"></i>
         </div>
+
         <div class="head">
             <div class="user-img">
-                <img src="/AvatarLogo.jpg" alt=""/>
+                <img src="/AvatarLogo.jpg" alt="" />
             </div>
             <div class="user-details">
                 <p class="title">web developer</p>
                 <p class="name">John Mazon</p>
             </div>
         </div>
+
         <div class="nav">
-            <div class="menu">
-                <p class="title">Main</p>
-                <ul>
-                    <li class="active">
-                        <a href="#">
-                            <i class="fi fi-rr-home"></i>
-                            <span class="text">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#">
-                            <i class="fi fi-rr-user"></i>
-                            <span class="text">YourURL</span>
-                            <i class="fi fi-rr-angle-down "></i>
-                        </a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a href="#">
-                                    <span class="text">Urls</span>
+            {#each menus.slice(0, 2) as menu, i}
+                <div class="menu">
+                    <p class="title">{sidebarActive && menu.title.length > 4 ? menu.title.slice(0, 4) : menu.title}</p>
+                    <ul>
+                        {#each menu.items as item, j}
+                            <li class={(selectedMenuIndex === `${i}-${j}`) ? 'active' : ''}>
+                                <a
+                                        href={item.link}
+                                        on:click|preventDefault={() => {
+										toggleMenu(`${i}-${j}`, !!item.subItems);
+										handleMenuClick(item);
+									}}
+                                >
+                                    <i class={item.icon}></i>
+                                    <span class="text">{item.label}</span>
+                                    {#if item.subItems}
+                                        <i class="fi fi-rr-angle-down" style={`transform: rotate(${expandedMenuIndex === `${i}-${j}` ? '180deg' : '0deg'})`}></i>
+                                    {/if}
                                 </a>
+                                {#if item.subItems}
+                                    <ul class="sub-menu" style="display: {expandedMenuIndex === `${i}-${j}` ? 'block' : 'none'}">
+                                        {#each item.subItems as subItem}
+                                            <li>
+                                                <a href={subItem.link} on:click|preventDefault={selectSubItem}>
+                                                    <span class="text">{subItem.label}</span>
+                                                </a>
+                                            </li>
+                                        {/each}
+                                    </ul>
+                                {/if}
                             </li>
-                            <li>
-                                <a href="#">
-                                    <span class="text">Statistics</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="">
-                        <a href="#">
-                            <i class="fi fi-rr-file"></i>
-                            <span class="text">Urls</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#">
-                            <i class="fi fi-rr-calendar"></i>
-                            <span class="text">Schedules</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#">
-                            <i class="fi fi-rr-chart-line-up"></i>
-                            <span class="text">Statistics</span>
-                            <i class="fi fi-rr-angle-down"></i>
-                        </a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a href="#">
-                                    <span class="text">Share</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="text">Tops</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="menu">
-                <p class="titol" id="settings">Sett</p>
-                <ul>
-                    <li class="">
-                        <a href="#">
-                            <i class="fi fi-rr-settings"></i>
-                            <span class="text">Settings</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                        {/each}
+                    </ul>
+                </div>
+            {/each}
         </div>
-        <div class="menu">
-            <p class="title" id="account">Acco</p>
-            <ul>
-                <li>
-                    <a href="#">
-                        <i class="fi fi-rr-question "></i>
-                        <span class="text">Help</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fi fi-rr-exit"></i>
-                        <span class="text">Logout</span>
-                    </a>
-                </li>
-            </ul>
+
+        <div class="account-menu">
+            {#each menus.slice(2) as menu, i}
+                <div class="menu">
+                    <p class="title">{sidebarActive && menu.title.length > 4 ? menu.title.slice(0, 4) : menu.title}</p>
+                    <ul>
+                        {#each menu.items as item, j}
+                            <li class={(selectedMenuIndex === `2-${j}`) ? 'active' : ''}>
+                                <a href={item.link} on:click|preventDefault={() => toggleMenu(`2-${j}`, !!item.subItems)}>
+                                    <i class={item.icon}></i>
+                                    <span class="text">{item.label}</span>
+                                </a>
+                            </li>
+                        {/each}
+                    </ul>
+                </div>
+            {/each}
         </div>
     </div>
 </div>
@@ -109,6 +152,21 @@
 <style>
 
     @import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900);
+
+    .nav {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .account-menu {
+        margin-top: auto; /* Esto empuja el Account hacia abajo */
+    }
+
+    .sidebar.night {
+        background-color: #1c1c1c;
+        color: white;
+    }
 
 
     .container{
@@ -413,37 +471,3 @@
 
 </style>
 
-<script>
-
-    import { onMount } from 'svelte';
-    import jQuery from 'jquery';
-
-    onMount(() => {
-        jQuery('.menu > ul > li').on('click', function () {
-            jQuery(this).siblings().removeClass("active")
-            jQuery(this).toggleClass("active");
-            jQuery(this).find("ul").slideToggle();
-            jQuery(this).siblings().find("ul").slideUp();
-            jQuery(this).siblings().find("active").find("li").removeClass("active");
-        });
-    });
-
-    onMount(() => {
-        jQuery(".menu-btn").on('click', function () {
-            jQuery(".sidebar").toggleClass("active");
-
-            const isActive = jQuery(".sidebar").hasClass("active");
-
-            if (isActive) {
-                // Si sidebar está activa, acortar texto
-                jQuery("#account").text("Acco");
-                jQuery("#settings").text("Sett");
-            } else {
-                // Si sidebar está colapsada, mostrar texto completo
-                jQuery("#account").text("Account");
-                jQuery("#settings").text("Settings");
-            }
-        });
-    });
-
-</script>
