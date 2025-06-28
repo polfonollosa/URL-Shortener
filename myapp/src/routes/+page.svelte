@@ -1,25 +1,39 @@
+<!-- +page.svelte -->
 <script>
     import SideBar from '$lib/SideBar.svelte';
     import OptionsWindow from '$lib/OptionsWindow.svelte';
-    import ThreeScene from "$lib/ThreeScene.svelte";
     import Dashboard from "$lib/Dashboard.svelte";
 
     let showOptions = false;
 </script>
 
-<div class="layout">
+<!-- UI superpuesta -->
+<div class="floating-ui">
     <SideBar on:openSettings={() => showOptions = true} />
     <OptionsWindow visible={showOptions} on:close={() => showOptions = false} />
 </div>
-<Dashboard></Dashboard>
 
+<!-- Contenido principal -->
+<div class="main-content">
+    <Dashboard />
+</div>
 
 <style>
-    .layout {
+    .floating-ui {
         position: fixed;
-        display: flex;
-        height: 100vh;
+        top: 0;
+        left: 0;
         width: 100vw;
-        overflow: hidden;
+        height: 100vh;
+        pointer-events: none; /* deja pasar clics si necesario */
+        z-index: 999;
+    }
+
+    .floating-ui :global(*) {
+        pointer-events: auto; /* solo sus hijos pueden recibir eventos */
+    }
+
+    .main-content {
+        height: 100vh;
     }
 </style>

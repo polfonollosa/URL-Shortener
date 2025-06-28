@@ -57,29 +57,34 @@
 
 <style>
     .container {
+        position: fixed; /* Esto hace que esté respecto al viewport */
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding-right: 210px;
-        height: 100vh;
-        width: 100%;
+        z-index: 1000; /* Asegura que esté por encima del resto */
+        backdrop-filter: blur(1px); /* opcional, efecto bonito */
     }
 
     .options-panel {
-        position: relative;
+        position: relative; /* No necesita ser fixed aquí si el contenedor ya lo es */
         width: 350px;
         height: 500px;
         background-color: #fff;
         border-radius: 30px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         padding: 24px;
-        z-index: 999;
         display: flex;
         flex-direction: column;
         gap: 16px;
         color: #000;
         transition: background-color 0.3s, color 0.3s;
+        z-index: 1001;
     }
+
 
     .options-panel.night {
         background-color: #1e1e1e;

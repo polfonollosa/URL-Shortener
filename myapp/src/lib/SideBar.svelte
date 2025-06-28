@@ -177,10 +177,11 @@
     }
 
     .sidebar{
-        position: relative;
+        position: fixed;
         width: 256px;
         height: 100vh;
         display: flex;
+        z-index:999;
         gap: 2px;
         flex-direction: column;
         background-color: #fff;
