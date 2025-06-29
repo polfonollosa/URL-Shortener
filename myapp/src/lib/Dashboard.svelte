@@ -1,9 +1,14 @@
 <script>
     let showAdvanced = false;
     let passwordOption = 'no';
+    let hasResult = false;
 
     function toggleAdvanced() {
         showAdvanced = !showAdvanced;
+    }
+
+    function toggleResult(){
+        hasResult = !hasResult;
     }
 </script>
 
@@ -19,7 +24,7 @@
         <section class="input-section">
             <div class="main-controls">
                 <input class="input-first" />
-                <button>Cortar</button>
+                <button class="cortar" on:click={toggleResult}>Cortar</button>
             </div>
 
             <div class="advanced-wrapper">
@@ -37,15 +42,137 @@
                 <p class="more-opt" on:click={toggleAdvanced}>More Options</p>
             </div>
         </section>
+        {#if hasResult}
+            <section class="results">
+                <div class="results-content">
+                    <div class="copy-group">
+                        <input class="results-input" />
+                        <button class="copiar">Copiar</button>
+                    </div>
+                    <div class="share-group">
+                        <button class="compartir">Compartir</button>
+                    </div>
+                </div>
 
-        <section class="results">
-            <!-- Mostrar resultados aquí -->
-        </section>
+                <div class="results-img"></div>
+            </section>
+        {/if}
     </div>
 </div>
 
 
 <style>
+
+    .copy-group {
+        display: flex;
+        gap: 15px;
+        align-items: stretch; /* <- asegura igual altura vertical */
+    }
+
+    .results-input,
+    .copiar {
+        height: 6vh;
+        border-radius: 8px;
+        font-size: 16px;
+        padding-inline: 20px;
+        border: none;
+    }
+
+    .copiar{
+        opacity: 70%;
+    }
+
+    .results {
+        margin-top: 40px;
+        background-color: #900fdc;
+        width: 75vw;
+        min-height: 30vh; /* asegura espacio mínimo */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border: 2px dashed white;
+        border-radius: 12px;
+        gap: 20px;
+        box-sizing: border-box;
+    }
+
+
+
+    .results-content {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 85%;
+    }
+
+    .copy-group {
+        display: flex;
+        gap: 15px;
+    }
+
+    .results-input {
+        height: 6vh;
+        width: 50vw;
+        border-radius: 8px;
+        font-size: 16px;
+        padding-inline: 20px;
+        border: none;
+    }
+
+    .main-controls .copiar{
+        height: 10px;
+    }
+
+    .copiar {
+        width: 10vw;
+        height: 2vh;
+        background-color: #ff4c4c;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .compartir {
+        width: 20vw;
+        height: 5.5vh;
+        background-color: #ffffff;
+        color: #900fdc;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .results-img {
+        height: 95%; /* menor que 100% para reducir altura */
+        width: 15%;
+        background-image: url("/descarga.png");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        align-self: center; /* para centrar verticalmente dentro del padre flex */
+    }
+
+    /* Botón copiar */
+    .copiar {
+        height: 7vh;
+        padding: 0 25px;
+        background-color: #ff4c4c;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .copiar:hover {
+        opacity: 100%;
+    }
+
 
     .dashboard {
         position: relative;
@@ -86,7 +213,7 @@
         gap: 30px;
     }
 
-    .main-controls button{
+    .main-controls .cortar{
         font-weight: bold;
     }
 
@@ -98,7 +225,7 @@
         padding-inline: 35px;
     }
 
-    .usefull button {
+    .usefull .cortar {
         height: 10vh;
         width: 15vw;
         background-color: #ff4c4c;
@@ -150,6 +277,7 @@
         font-weight: bold;
         user-select: none;
         padding-right: 1000px;
+        transition: all 0.3s    ;
     }
 
     .more-opt:hover {
@@ -159,6 +287,9 @@
     /* Resultados (placeholder para el futuro) */
     .results {
         margin-top: 40px;
+        background-color: #900fdc;
+        width: 75vw;
+        height: 25vh;
     }
 
 </style>
