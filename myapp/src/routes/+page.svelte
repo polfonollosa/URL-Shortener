@@ -3,6 +3,7 @@
     import SideBar from '$lib/SideBar.svelte';
     import OptionsWindow from '$lib/OptionsWindow.svelte';
     import Dashboard from "$lib/Dashboard.svelte";
+    import HistoryTable from "$lib/HistoryTable.svelte";
 
     let showOptions = false;
 </script>

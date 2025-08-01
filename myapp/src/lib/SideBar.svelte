@@ -13,7 +13,6 @@
             title: "Main",
             items: [
                 { label: "Dashboard", icon: "fi fi-rr-home", link: "#" },
-                { label: "Urls", icon: "fi fi-rr-file", link: "#" },
                 { label: "Schedules", icon: "fi fi-rr-calendar", link: "#" },
                 {
                     label: "Statistics",
@@ -108,7 +107,9 @@
                                     <i class={item.icon}></i>
                                     <span class="text">{item.label}</span>
                                     {#if item.subItems}
-                                        <i class="fi fi-rr-angle-down" style={`transform: rotate(${expandedMenuIndex === `${i}-${j}` ? '180deg' : '0deg'})`}></i>
+                                        <i class="fi fi-rr-angle-down"
+                                           style={`transform: rotate(${expandedMenuIndex === `${i}-${j}` ? '180deg' : '0deg'})`}>
+                                        </i>
                                     {/if}
                                 </a>
                                 {#if item.subItems}

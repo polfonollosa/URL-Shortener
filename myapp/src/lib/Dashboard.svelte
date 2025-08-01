@@ -1,7 +1,23 @@
 <script>
+    import { darkMode } from '$lib';
+
     let showAdvanced = false;
     let passwordOption = 'no';
     let hasResult = false;
+
+    let palette = {
+        '50': '#f6f6f6',
+        '100': '#e7e7e7',
+        '200': '#d1d1d1',
+        '300': '#b0b0b0',
+        '400': '#7c7c7c',
+        '500': '#6d6d6d',
+        '600': '#5d5d5d',
+        '700': '#4f4f4f',
+        '800': '#454545',
+        '900': '#3d3d3d',
+        '950': '#262626',
+    }
 
     function toggleAdvanced() {
         showAdvanced = !showAdvanced;
@@ -19,9 +35,10 @@
     </div>
 
     <div class="usefull">
-        <h2>Link Shortener</h2>
+
 
         <section class="input-section">
+            <h2 class="shorturl">Link Shortener</h2>
             <div class="main-controls">
                 <input class="input-first" />
                 <button class="cortar" on:click={toggleResult}>Cortar</button>
@@ -30,71 +47,96 @@
             <div class="advanced-wrapper">
                 {#if showAdvanced}
                     <div class="addit-op">
-                        <select bind:value={passwordOption}>
-                            <option value="yes">Con contraseña</option>
-                            <option value="no">Sin contraseña</option>
+                        <select class="select" bind:value={passwordOption}>
+                            <option class="contra" value="yes">Con contraseña</option>
+                            <option class="no-contra" value="no" style="border: none">Sin contraseña</option>
                         </select>
                         {#if passwordOption === 'yes'}
                             <input type="password" placeholder="Contraseña" />
+                        {:else}
+                            <div style="width: 24vw;"></div> <!-- espacio reservado -->
                         {/if}
                     </div>
                 {/if}
-                <p class="more-opt" on:click={toggleAdvanced}>More Options</p>
+                <div class="moreoptions">
+                    <p class="more-opt" on:click={toggleAdvanced}>More Options</p>
+                    <span class="fi fi-rr-settings"></span>
+                </div>
+
             </div>
         </section>
         {#if hasResult}
-            <section class="results">
-                <div class="results-content">
-                    <div class="copy-group">
-                        <input class="results-input" />
-                        <button class="copiar">Copiar</button>
+                <section class="results">
+                    <div class="results-content">
+                        <div class="copy-group">
+                            <input class="results-input" />
+                            <button class="copiar">Copiar</button>
+                        </div>
+                        <div class="share-group">
+                            <button class="compartir">Compartir</button>
+                        </div>
                     </div>
-                    <div class="share-group">
-                        <button class="compartir">Compartir</button>
-                    </div>
-                </div>
 
-                <div class="results-img"></div>
-            </section>
+                    <div class="results-img"></div>
+                </section>
         {/if}
+
     </div>
+
+
 </div>
 
 
 <style>
 
-    .copy-group {
-        display: flex;
-        gap: 15px;
-        align-items: stretch; /* <- asegura igual altura vertical */
-    }
-
-    .results-input,
-    .copiar {
-        height: 6vh;
-        border-radius: 8px;
-        font-size: 16px;
-        padding-inline: 20px;
+    .select{
         border: none;
     }
 
-    .copiar{
-        opacity: 70%;
+    .moreoptions{
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .moreoptions span{
+        padding-bottom: 10px;
+    }
+
+    .contra{
+        padding-left: 100px;
+        border: none;
+    }
+
+    .copy-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    .results-input{
+        border-radius: 8px;
+        font-size: 16px;
+        padding-inline: 20px;
+        border: 2px dashed white;
+        height: 7vh;
+        width: 50vw;
     }
 
     .results {
-        margin-top: 40px;
         background-color: #900fdc;
         width: 75vw;
-        min-height: 30vh; /* asegura espacio mínimo */
+        min-height: 30vh;
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 20px;
-        border: 2px dashed white;
+        border: 2px dashed #4f4f4f;
         border-radius: 12px;
         gap: 20px;
         box-sizing: border-box;
+        height: 25vh;
     }
 
 
@@ -106,40 +148,20 @@
         width: 85%;
     }
 
-    .copy-group {
-        display: flex;
-        gap: 15px;
+    .shorturl{
+        font-size: 64px;
+        padding-bottom: 48px;
+        font-family: "Notable", sans-serif;
+        font-weight: 400;
+        font-style: normal;
     }
 
-    .results-input {
-        height: 6vh;
-        width: 50vw;
-        border-radius: 8px;
-        font-size: 16px;
-        padding-inline: 20px;
-        border: none;
-    }
-
-    .main-controls .copiar{
-        height: 10px;
-    }
-
-    .copiar {
-        width: 10vw;
-        height: 2vh;
-        background-color: #ff4c4c;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-weight: bold;
-        cursor: pointer;
-    }
 
     .compartir {
         width: 20vw;
         height: 5.5vh;
-        background-color: #ffffff;
-        color: #900fdc;
+        background-color: #4f4f4f;
+        color: #fff;
         border: none;
         border-radius: 8px;
         font-weight: bold;
@@ -159,8 +181,9 @@
     /* Botón copiar */
     .copiar {
         height: 7vh;
+        width: 10vw;
         padding: 0 25px;
-        background-color: #ff4c4c;
+        background-color: #4f4f4f;
         color: white;
         border: none;
         border-radius: 8px;
@@ -177,13 +200,14 @@
     .dashboard {
         position: relative;
         width: 100%;
-        height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .header {
         width: 100vw;
         height: 7vh;
-        background-color: #ff4c4c;
+        background-color: #f3f3f3;
     }
 
     .usefull {
@@ -210,11 +234,7 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        gap: 30px;
-    }
-
-    .main-controls .cortar{
-        font-weight: bold;
+        gap: 10px;
     }
 
     .input-first {
@@ -223,73 +243,98 @@
         border-radius: 8px;
         font-size: 24px;
         padding-inline: 35px;
+        border: none;
     }
 
     .usefull .cortar {
         height: 10vh;
         width: 15vw;
-        background-color: #ff4c4c;
+        background-color: #4f4f4f;
         border: none;
         border-radius: 8px;
-        opacity: 0.5;
+        opacity: 1;
         cursor: pointer;
         color: #ffffff;
-        font-size: 15px;
+        font-size: 24px;
         transition: opacity 0.3s;
         z-index: 9;
+        font-weight: bold;
     }
 
     .usefull button:hover {
-        opacity: 1;
+        opacity: 0.5;
     }
 
     /* Opciones avanzadas */
     .advanced-wrapper {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start; /* mantiene todo a la izquierda */
+        justify-content: flex-start;
+        width: 100%; /* mismo ancho que .addit-op */
+        min-height: 100px; /* reserva espacio aunque no se vea .addit-op */
         gap: 10px;
         margin-top: 20px;
     }
+
 
     .addit-op {
         display: flex;
         gap: 20px;
         align-items: center;
-        width: 100%;
-        padding-right: 10px;
+        width: 75%;
+        padding-right: 5px;
     }
 
-    .addit-op select,
-    .addit-op input {
+    .addit-op input{
         padding: 10px;
         font-size: 14px;
         border-radius: 8px;
-        border: 1px solid #ccc;
-        width: 36vw;
+        border: none;
+        width: 32vw;
         height: 6vh;
+    }
+
+    .addit-op select
+     {
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 8px;
+        border: none;
+        width: 10vw;
+        height: 6vh;
+        cursor: pointer;
     }
 
     /* Botón para mostrar opciones */
     .more-opt {
-        color: #ff4c3c;
         cursor: pointer;
         font-weight: bold;
         user-select: none;
-        padding-right: 1000px;
         transition: all 0.3s    ;
+        padding-left: 10px;
     }
 
-    .more-opt:hover {
-        color: #900fdc;
+
+
+    .moreoptions:hover {
+        color: #7c7c7c;
     }
 
     /* Resultados (placeholder para el futuro) */
     .results {
         margin-top: 40px;
-        background-color: #900fdc;
+        background-color: #f3f3f3;
         width: 75vw;
         height: 25vh;
+    }
+
+    .table{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-left: 215px;
+        padding-top: 100px;
     }
 
 </style>
